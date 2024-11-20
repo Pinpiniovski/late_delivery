@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commandes en Livraison Tardive</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        .section-header {
+            font-weight: bold;
+            font-size: 18px;
+            background-color: #f4f4f4;
+            padding: 10px;
+            text-transform: uppercase;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            table-layout: fixed; /* Assure un alignement uniforme */
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+            vertical-align: middle; /* Centrage vertical */
+            word-wrap: break-word; /* Évite les débordements de texte */
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        th:nth-child(1), td:nth-child(1) {
+            width: 40%; /* Largeur pour le produit */
+        }
+        th:nth-child(2), td:nth-child(2) {
+            width: 15%; /* Largeur pour la quantité */
+        }
+        th:nth-child(3), td:nth-child(3) {
+            width: 45%; /* Largeur pour les commandes */
+        }
+    </style>
+</head>
+<body>
+    <h1>Commandes en Livraison Tardive</h1>
+
+    <div class="section">
+        <div class="section-header">Overdue Products</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Orders</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product, orders in overdue.items() %}
+                <tr>
+                    <td>{{ product }}</td>
+                    <td>{{ orders | map(attribute='quantity') | sum }}</td>
+                    <td>
+                        {% for order in orders %}
+                        <a href="{{ order.order_link }}" target="_blank">{{ order.order_name }}</a>
+                        {% if not loop.last %} | {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <div class="section-header">Delivery in the Next 7 Days</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Orders</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product, orders in next_7_days.items() %}
+                <tr>
+                    <td>{{ product }}</td>
+                    <td>{{ orders | map(attribute='quantity') | sum }}</td>
+                    <td>
+                        {% for order in orders %}
+                        <a href="{{ order.order_link }}" target="_blank">{{ order.order_name }}</a>
+                        {% if not loop.last %} | {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <div class="section-header">Delivery in the Next 7 to 15 Days</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Orders</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product, orders in next_7_to_15_days.items() %}
+                <tr>
+                    <td>{{ product }}</td>
+                    <td>{{ orders | map(attribute='quantity') | sum }}</td>
+                    <td>
+                        {% for order in orders %}
+                        <a href="{{ order.order_link }}" target="_blank">{{ order.order_name }}</a>
+                        {% if not loop.last %} | {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <div class="section-header">Delivery in More Than 15 Days</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Orders</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product, orders in more_than_15_days.items() %}
+                <tr>
+                    <td>{{ product }}</td>
+                    <td>{{ orders | map(attribute='quantity') | sum }}</td>
+                    <td>
+                        {% for order in orders %}
+                        <a href="{{ order.order_link }}" target="_blank">{{ order.order_name }}</a>
+                        {% if not loop.last %} | {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

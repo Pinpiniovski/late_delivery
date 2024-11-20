@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commandes Classées par Catégories</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        .section-header {
+            font-weight: bold;
+            font-size: 18px;
+            background-color: #f4f4f4;
+            padding: 10px;
+            text-transform: uppercase;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <h1>Commandes Classées par Catégories</h1>
+
+    <div class="section">
+        <div class="section-header">Overdue Products</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Order Number</th>
+                    <th>End Delivery Date</th>
+                    <th>Days Left to Deliver</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in overdue %}
+                <tr>
+                    <td>{{ order.product_title }}</td>
+                    <td>{{ order.order_name }}</td>
+                    <td>{{ order.end_delivery_date }}</td>
+                    <td>{{ order.days_left }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <div class="section-header">Delivery in the Next 7 Days</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Order Number</th>
+                    <th>End Delivery Date</th>
+                    <th>Days Left to Deliver</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in next_7_days %}
+                <tr>
+                    <td>{{ order.product_title }}</td>
+                    <td>{{ order.order_name }}</td>
+                    <td>{{ order.end_delivery_date }}</td>
+                    <td>{{ order.days_left }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <div class="section-header">Delivery in the Next 7 to 15 Days</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Order Number</th>
+                    <th>End Delivery Date</th>
+                    <th>Days Left to Deliver</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in next_7_to_15_days %}
+                <tr>
+                    <td>{{ order.product_title }}</td>
+                    <td>{{ order.order_name }}</td>
+                    <td>{{ order.end_delivery_date }}</td>
+                    <td>{{ order.days_left }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <div class="section-header">Delivery in More Than 15 Days</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Order Number</th>
+                    <th>End Delivery Date</th>
+                    <th>Days Left to Deliver</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in more_than_15_days %}
+                <tr>
+                    <td>{{ order.product_title }}</td>
+                    <td>{{ order.order_name }}</td>
+                    <td>{{ order.end_delivery_date }}</td>
+                    <td>{{ order.days_left }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
