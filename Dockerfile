@@ -2,10 +2,9 @@ FROM python:3.9-slim
 
 WORKDIR /app
 
-COPY order_app/requirements.txt /app/
-RUN pip install --no-cache-dir -r requirements.txt
+COPY order_app/ /app/
 
-COPY order_app/ /app
+RUN pip install --no-cache-dir -r /app/requirements.txt
 
 EXPOSE 5001
 
