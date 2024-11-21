@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from datetime import datetime, timedelta
 import requests
+import time  # Pour mesurer le temps
 
 app = Flask(__name__)
 
@@ -21,6 +22,7 @@ def fetch_recent_unfulfilled_orders():
     """
     Récupère les commandes non livrées des 3 derniers mois.
     """
+    start_time = time.time()
     try:
         # Date il y a 3 mois
         three_months_ago = (datetime.now() - timedelta(days=90)).strftime("%Y-%m-%dT%H:%M:%S%z")
@@ -30,6 +32,8 @@ def fetch_recent_unfulfilled_orders():
         response = requests.get(url, headers=headers)
         
         if response.status_code == 200:
+            elapsed_time = time.time() - start_time
+            print(f"fetch_recent_unfulfilled_orders: {elapsed_time:.2f} seconds")
             return response.json().get("orders", [])
         else:
             print(f"Erreur lors de la récupération des commandes: {response.status_code}")
@@ -40,13 +44,19 @@ def fetch_recent_unfulfilled_orders():
 
 @app.route("/")
 def index():
+    total_start_time = time.time()
+
     # Catégories de commandes
     overdue = []
     next_7_days = []
     next_7_to_15_days = []
     more_than_15_days = []
 
+    fetch_start_time = time.time()
     orders = fetch_recent_unfulfilled_orders()
+    print(f"Fetching orders: {time.time() - fetch_start_time:.2f} seconds")
+
+    processing_start_time = time.time()
     for order in orders:
         order_name = order.get("name")
         order_id = order.get("id")
@@ -60,7 +70,10 @@ def index():
             product_id = item.get("product_id")
             quantity = item.get("quantity", 1)
 
+            product_start_time = time.time()
             product_response = requests.get(PRODUCT_URL.format(product_id=product_id), headers=headers)
+            print(f"Fetching product {product_id}: {time.time() - product_start_time:.2f} seconds")
+
             if product_response.status_code == 200:
                 product_data = product_response.json().get("product", {})
                 product_tags = product_data.get("tags", "")
@@ -81,6 +94,9 @@ def index():
                     elif days_left > 15:
                         more_than_15_days.append(order_data)
                     break
+
+    print(f"Processing orders: {time.time() - processing_start_time:.2f} seconds")
+    print(f"Total execution time: {time.time() - total_start_time:.2f} seconds")
 
     return render_template(
         "orders_grouped.html",
