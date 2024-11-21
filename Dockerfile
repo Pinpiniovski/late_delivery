@@ -2,11 +2,9 @@ FROM python:3.9-slim
 
 WORKDIR /app
 
-# Copier uniquement les fichiers nécessaires
 COPY order_app/ /app/
 
-# Installer les dépendances si `requirements.txt` existe dans `order_app`
-RUN pip install --no-cache-dir -r /app/requirements.txt || echo "No requirements.txt found"
+RUN pip install --no-cache-dir -r /app/requirements.txt
 
 EXPOSE 5001
 
