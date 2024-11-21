@@ -1,11 +1,16 @@
-FROM python:3.9-slim
+# Base Python image
+FROM python:3.10-slim
 
+# Définir le répertoire de travail
 WORKDIR /app
 
-COPY order_app/ /app/
+# Copier les fichiers nécessaires
+COPY order_app/ /app
+COPY scripts/ /scripts
+COPY requirements.txt /app
 
-RUN pip install --no-cache-dir -r /app/requirements.txt
+# Installer les dépendances
+RUN pip install -r /app/requirements.txt
 
-EXPOSE 5001
-
-CMD ["gunicorn", "--bind", "0.0.0.0:5001", "--timeout", "120", "app:app"]
+# Commande par défaut pour démarrer Flask
+CMD ["sh", "-c", "python /scripts/preprocess_orders.py && python /app/app.py"]
